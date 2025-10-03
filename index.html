@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceOver Studio - Emotional Text-to-Speech</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="background-effects">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <div class="container">
+        <header class="app-header">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <div class="soundwave">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+                <div class="logo-text">
+                    <h1>VoiceOver Studio</h1>
+                    <p class="subtitle">Create expressive voiceovers with intelligent emotional tones</p>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div class="content-grid">
+                <!-- Script Input Section -->
+                <section class="script-section glass-card">
+                    <div class="card__header">
+                        <h2>
+                            <span class="section-icon">📝</span>
+                            Script Input
+                        </h2>
+                        <div class="script-controls">
+                            <select class="form-control preset-select glow-focus" id="presetSelect">
+                                <option value="">Choose a sample script...</option>
+                            </select>
+                            <button class="btn btn--secondary btn--sm pulse-hover" id="clearBtn">Clear</button>
+                        </div>
+                    </div>
+                    <div class="card__body">
+                        <div class="form-group">
+                            <textarea 
+                                class="form-control script-input glow-focus" 
+                                id="scriptInput" 
+                                placeholder="Enter your script here or choose a sample above..."
+                                rows="8"
+                            ></textarea>
+                        </div>
+                        <div class="script-stats">
+                            <div class="stat-item">
+                                <span class="stat-icon">📊</span>
+                                <span id="charCount">0 characters</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">📖</span>
+                                <span id="wordCount">0 words</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">⏱️</span>
+                                <span id="estimatedDuration">~0s</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Voice Settings Section -->
+                <section class="settings-section glass-card">
+                    <div class="card__header">
+                        <h2>
+                            <span class="section-icon">🎛️</span>
+                            Voice Settings
+                        </h2>
+                        <button class="btn btn--outline btn--sm pulse-hover" id="advancedToggle">
+                            Advanced Settings
+                        </button>
+                    </div>
+                    <div class="card__body">
+                        <!-- Emotional Tone -->
+                        <div class="form-group">
+                            <label class="form-label" for="toneSelect">
+                                <span class="label-icon">🎭</span>
+                                Emotional Tone
+                            </label>
+                            <div class="tone-grid" id="toneGrid">
+                                <!-- Tone buttons will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Voice Selection -->
+                        <div class="form-group">
+                            <label class="form-label" for="voiceSelect">
+                                <span class="label-icon">🗣️</span>
+                                Voice
+                            </label>
+                            <select class="form-control glow-focus" id="voiceSelect">
+                                <option value="">Loading voices...</option>
+                            </select>
+                        </div>
+
+                        <!-- Basic Controls -->
+                        <div class="controls-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="pitchSlider">
+                                    <span class="label-icon">🎵</span>
+                                    Pitch <span class="value-display" id="pitchValue">1.0</span>
+                                </label>
+                                <input type="range" id="pitchSlider" min="0.5" max="2" step="0.1" value="1.0" class="audio-slider">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="rateSlider">
+                                    <span class="label-icon">⚡</span>
+                                    Rate <span class="value-display" id="rateValue">1.0</span>
+                                </label>
+                                <input type="range" id="rateSlider" min="0.5" max="2" step="0.1" value="1.0" class="audio-slider">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="volumeSlider">
+                                    <span class="label-icon">🔊</span>
+                                    Volume <span class="value-display" id="volumeValue">1.0</span>
+                                </label>
+                                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1.0" class="audio-slider">
+                            </div>
+                        </div>
+
+                        <!-- Advanced Settings (Hidden by default) -->
+                        <div class="advanced-settings hidden" id="advancedSettings">
+                            <div class="form-group">
+                                <label class="form-label" for="pauseMultiplier">
+                                    <span class="label-icon">⏸️</span>
+                                    Pause Length <span class="value-display" id="pauseValue">1.0</span>
+                                </label>
+                                <input type="range" id="pauseMultiplier" min="0.5" max="2" step="0.1" value="1.0" class="audio-slider">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <input type="checkbox" id="ssmlMode"> 
+                                    <span class="label-icon">🏷️</span>
+                                    Enable SSML Mode
+                                </label>
+                                <p class="help-text">Advanced markup for precise control</p>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
+                            <button class="btn btn--outline pulse-hover" id="previewBtn" disabled>
+                                <span class="btn-icon">👁️</span>
+                                Preview (First 50 words)
+                            </button>
+                            <button class="btn btn--primary gradient-btn pulse-hover" id="generateBtn" disabled>
+                                <span class="btn-icon">🎤</span>
+                                Generate Voiceover
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Playback Section -->
+                <section class="playback-section glass-card">
+                    <div class="card__header">
+                        <h2>
+                            <span class="section-icon">🎵</span>
+                            Playback Control
+                        </h2>
+                        <div class="playback-info">
+                            <span class="status status--info pulse-glow" id="statusIndicator">Ready</span>
+                        </div>
+                    </div>
+                    <div class="card__body">
+                        <!-- Waveform Visualization -->
+                        <div class="waveform-container glow-container">
+                            <canvas id="waveform" width="400" height="80"></canvas>
+                            <div class="waveform-overlay"></div>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="progress-container">
+                            <div class="progress-bar audio-progress">
+                                <div class="progress-fill gradient-fill" id="progressFill"></div>
+                                <div class="progress-glow"></div>
+                            </div>
+                            <div class="time-display">
+                                <span id="currentTime">0:00</span>
+                                <span id="totalTime">0:00</span>
+                            </div>
+                        </div>
+
+                        <!-- Playback Controls -->
+                        <div class="playback-controls">
+                            <button class="btn btn--secondary control-btn audio-control pulse-hover" id="playPauseBtn" disabled>
+                                <span class="control-icon" id="playPauseIcon">▶</span>
+                            </button>
+                            <button class="btn btn--secondary control-btn audio-control pulse-hover" id="stopBtn" disabled>
+                                <span class="control-icon">■</span>
+                            </button>
+                            <button class="btn btn--outline control-btn audio-control pulse-hover" id="downloadBtn" disabled>
+                                <span class="control-icon">⬇️</span>
+                                Download
+                            </button>
+                        </div>
+
+                        <!-- Text Analysis -->
+                        <div class="text-analysis" id="textAnalysis">
+                            <h3>
+                                <span class="section-icon">🔍</span>
+                                Text Analysis
+                            </h3>
+                            <div class="analysis-content glass-inner" id="analysisContent">
+                                <p class="help-text">Enter text above to see pause and emphasis analysis</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay hidden" id="loadingOverlay">
+            <div class="loading-content glass-card">
+                <div class="loading-spinner audio-spinner"></div>
+                <p>Generating voiceover...</p>
+                <div class="loading-waves">
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div class="modal hidden" id="errorModal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content glass-card">
+                <div class="modal-header">
+                    <h3>
+                        <span class="error-icon">⚠️</span>
+                        Error
+                    </h3>
+                    <button class="modal-close pulse-hover" id="modalClose">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="errorMessage">An error occurred.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn--primary pulse-hover" id="modalOkBtn">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="app-footer">
+        <div class="container">
+            <p>&copy; 2025 VoiceOver Studio - Keyboard shortcuts: Ctrl+Enter (Generate), Space (Play/Pause)</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
